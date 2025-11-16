@@ -85,3 +85,25 @@ async def delete_review(db: AsyncSession, review: models.Review):
     await db.delete(review)
     await db.commit()
     return True
+<<<<<<< HEAD
+=======
+
+async def get_product(db: AsyncSession, product_id: int):
+    result = await db.execute(
+        select(models.Product).where(models.Product.id == product_id)
+    )
+    return result.scalar_one_or_none()
+
+
+async def list_reviews_by_product(db: AsyncSession, product_id: int):
+    result = await db.execute(
+        select(models.Review).where(models.Review.product_id == product_id)
+    )
+    return result.scalars().all()
+
+
+async def delete_product(db: AsyncSession, product: models.Product):
+    await db.delete(product)
+    await db.commit()
+
+>>>>>>> main

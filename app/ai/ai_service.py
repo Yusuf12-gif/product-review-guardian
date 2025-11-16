@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 # app/ai/ai_service.py
 
+=======
+>>>>>>> main
 async def analyze_review_text(text: str) -> dict:
     """
     Dummy AI analysis.
