@@ -63,21 +63,23 @@ product-review-guardian/
 │   ├── crud.py
 │   ├── deps.py
 │   ├── auth.py
+|   |
 │   ├── routes/
 │   │   ├── __init__.py
 │   │   ├── auth_routes.py
 │   │   └── review_routes.py
-│   └── ai/
+|   |   └── product_routes.py
+│   |
+|   └── ai/
 │       ├── __init__.py
 │       └── ai_service.py
 │
 ├── tests/
 │   └── test_basic.py
 │
-├── .env.example
+├── .env
 ├── .gitignore
 ├── requirements.txt
-├── Dockerfile
 └── README.md
 ```
 
@@ -127,7 +129,7 @@ cp .env.example .env
 Edit with your values:
 
 ```
-DATABASE_URL=sqlite+aiosqlite:///./prg.db
+DATABASE_URL=spostgresql+asyncpg://<username>:<password>@<host>:<port>/<database_name>
 SECRET_KEY=replace_with_secure_key
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
@@ -183,14 +185,6 @@ You can plug in:
 - Local BERT model  
 - Any ML pipeline  
 
----
-
-# 🐳 Run Using Docker
-
-```
-docker build -t prg .
-docker run -p 8000:80 prg
-```
 
 ---
 
@@ -215,7 +209,3 @@ docker run -p 8000:80 prg
 - Celery + Redis  
 - Real AI models  
 
----
-
-# 📄 License
-MIT License.
