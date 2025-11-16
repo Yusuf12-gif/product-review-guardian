@@ -1,23 +1,20 @@
-"""
-Placeholder AI service.
-Replace the internals with actual model calls:
-- run sentiment model (BERT)
-- run spam model
-- run toxicity model
-- generate summary using LLM
-"""
-from typing import Dict
- 
-async def analyze_review_text(text: str) -> Dict:
-    # Dummy implementation.
-    # Replace these heuristics with real model inference or HTTP calls.
-    sentiment = 0.7 if "good" in text.lower() or "love" in text.lower() else -0.2
-    spam = False if len(set(text.split())) > 3 else True
-    toxicity = 0.05 if any(w in text.lower() for w in ["hate","stupid","idiot"]) else 0.01
-    summary = text[:120] + ("..." if len(text) > 120 else "")
+# app/ai/ai_service.py
+
+async def analyze_review_text(text: str) -> dict:
+    """
+    Dummy AI analysis.
+    You can plug a real model here later.
+    """
+    # Just some fake numbers based on length
+    length = len(text)
+    sentiment = 0.5 + min(length, 100) / 200.0  # 0.5–1.0
+    toxicity = 0.1
+    spam_flag = False
+    summary = text[:60] + ("..." if len(text) > 60 else "")
+
     return {
-        "sentiment_score": float(sentiment),
-        "spam_flag": bool(spam),
+        "sentiment_score": float(round(sentiment, 3)),
         "toxicity_score": float(toxicity),
+        "spam_flag": spam_flag,
         "ai_summary": summary,
     }
