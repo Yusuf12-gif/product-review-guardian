@@ -10,6 +10,7 @@ from ..models import User
 router = APIRouter(prefix="/products", tags=["products"])
 
 
+# ------------------- Create Product -------------------
 @router.post("/", response_model=schemas.ProductOut)
 async def create_product(
     product_in: schemas.ProductCreate,
@@ -18,11 +19,13 @@ async def create_product(
     return await crud.create_product(db, product_in)
 
 
+# ------------------- List Products -------------------
 @router.get("/", response_model=List[schemas.ProductOut])
 async def list_products(db: AsyncSession = Depends(get_db)):
     return await crud.list_products(db)
 
 
+# ------------------- Get Product by ID -------------------
 @router.get("/{product_id}", response_model=schemas.ProductOut)
 async def get_product(product_id: int, db: AsyncSession = Depends(get_db)):
     product = await crud.get_product(db, product_id)
@@ -30,7 +33,8 @@ async def get_product(product_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Product not found")
     return product
 
-# ------------------- Delete Product -------------------
+
+# ------------------- Delete Product (Admin Only) -------------------
 @router.delete("/{product_id}")
 async def delete_product(
     product_id: int,
@@ -45,7 +49,7 @@ async def delete_product(
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    # Ensure no reviews exist for this product to avoid foreign key errors
+    # Ensure no reviews exist to avoid foreign key issues
     reviews = await crud.list_reviews_by_product(db, product_id)
     if reviews:
         raise HTTPException(

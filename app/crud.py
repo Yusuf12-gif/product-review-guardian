@@ -15,7 +15,9 @@ async def create_user(db: AsyncSession, email: str, hashed_password: str) -> mod
 
 
 async def get_user_by_email(db: AsyncSession, email: str):
-    result = await db.execute(select(models.User).where(models.User.email == email))
+    result = await db.execute(
+        select(models.User).where(models.User.email == email)
+    )
     return result.scalars().first()
 
 
@@ -38,7 +40,12 @@ async def get_product(db: AsyncSession, product_id: int):
     result = await db.execute(
         select(models.Product).where(models.Product.id == product_id)
     )
-    return result.scalars().first()
+    return result.scalar_one_or_none()
+
+
+async def delete_product(db: AsyncSession, product: models.Product):
+    await db.delete(product)
+    await db.commit()
 
 
 # ---------- Review CRUD ----------
@@ -70,11 +77,19 @@ async def list_reviews(db: AsyncSession, skip: int = 0, limit: int = 100):
     return result.scalars().all()
 
 
+async def list_reviews_by_product(db: AsyncSession, product_id: int):
+    result = await db.execute(
+        select(models.Review).where(models.Review.product_id == product_id)
+    )
+    return result.scalars().all()
+
+
 async def update_review(
     db: AsyncSession, review: models.Review, changes: dict
 ):
     for key, value in changes.items():
         setattr(review, key, value)
+
     db.add(review)
     await db.commit()
     await db.refresh(review)
@@ -85,22 +100,3 @@ async def delete_review(db: AsyncSession, review: models.Review):
     await db.delete(review)
     await db.commit()
     return True
-
-async def get_product(db: AsyncSession, product_id: int):
-    result = await db.execute(
-        select(models.Product).where(models.Product.id == product_id)
-    )
-    return result.scalar_one_or_none()
-
-
-async def list_reviews_by_product(db: AsyncSession, product_id: int):
-    result = await db.execute(
-        select(models.Review).where(models.Review.product_id == product_id)
-    )
-    return result.scalars().all()
-
-
-async def delete_product(db: AsyncSession, product: models.Product):
-    await db.delete(product)
-    await db.commit()
-
