@@ -5,7 +5,7 @@
 - **Sentiment Score**
 - **Spam Detection**
 - **Toxicity Detection**
-- **AI-Generated Summaries**
+- **Dummy AI-Generated Summaries**
 
 It also includes a full **authentication system**, **JWT support**, **database models**, and **complete CRUD operations**.
 
@@ -30,9 +30,11 @@ It also includes a full **authentication system**, **JWT support**, **database m
 - Sentiment analysis  
 - Spam detection  
 - Toxicity analysis  
-- Auto-summary generation  
+- Auto-summary generation
 
-*(Located in `app/ai/ai_service.py` — easily replaceable with real models.)*
+These are dummy AI features we can replace them in future with real models
+
+*(Located in `app/ai/ai_service.py`)*
 
 ### 🧱 Clean Architecture
 - Async SQLAlchemy ORM  
